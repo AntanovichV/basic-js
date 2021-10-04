@@ -4,27 +4,31 @@ import { NotImplementedError } from '../extensions/index.js';
  * Implement chainMaker object according to task description
  * 
  */
-export default {
+ export default {
+  chain: [],
   getLength() {
-    return str.length;
+      return this.chain.length;
   },
   addLink(value) {
-    let str = "";
-    if (value == undefined) {
-      return str + `'(  )'`
-    }
-    return str + String(value);
+    if (String(value) == undefined) value = ''
+    this.chain.push(`( ${value} )`);
+    return this;
   },
   removeLink(position) {
-    if (Number.isInteger(position)||position<str.length) {
-      throw `Error`}
-    return str.split(str[position]).join('')
+    if (!(position ^ 0 === position) || position > this.chain.length - 1 || position <= 0) {
+        this.chain = [];
+        throw new Error(`You can't remove incorrect link!`)
+    }
+    this.chain.splice(position - 1,1);
+    return this;
   },
   reverseChain() {
-    return str.split('').reverse().join('')
+    this.chain.reverse();
+    return this;
   },
   finishChain() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    let result = this.chain.join('~~');
+    this.chain = [];
+    return result;
   }
 };

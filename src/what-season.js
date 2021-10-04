@@ -11,17 +11,42 @@ import { NotImplementedError } from '../extensions/index.js';
  * getSeason(new Date(2020, 02, 31)) => 'spring'
  * 
  */
-export default function getSeason(date) {
-  if (typeof date == "object") {
-    if (typeof date.getMonth != 'function' || Object.prototype.toString.call(date) != '[object Date]') {  
-      throw new Error ('Invalid date!')
-    } else {
-      if (date.getMonth() == 2 || date.getMonth() == 3 || date.getMonth() == 4) return `spring`;
-      if (date.getMonth() == 5 || date.getMonth() == 6 || date.getMonth() == 7) return `summer`;
-      if (date.getMonth() == 8 || date.getMonth() == 9 || date.getMonth() == 10) return `autumn`;
-      if (date.getMonth() == 0 || date.getMonth() == 1 || date.getMonth() == 11) return `winter`;
-    }
+ export default function getSeason(fakeDate) {
+  
+  if (!fakeDate) {
+    return 'Unable to determine the time of year!'
+  }
+
+  if (!(fakeDate instanceof Date) || Object.keys(fakeDate).length !== 0) {
+    throw new Error('Invalid date!')
   } else {
-    throw new Error ('Unable to determine the time of year!')
+    if (
+      fakeDate.getMonth() === 2 ||
+      fakeDate.getMonth() === 3 ||
+      fakeDate.getMonth() === 4
+    ) {
+      return 'spring'
+    }
+    if (
+      fakeDate.getMonth() === 5 ||
+      fakeDate.getMonth() === 6 ||
+      fakeDate.getMonth() === 7
+    ) {
+      return 'summer'
+    }
+    if (
+      fakeDate.getMonth() === 8 ||
+      fakeDate.getMonth() === 9 ||
+      fakeDate.getMonth() === 10
+    ) {
+      return 'fall'
+    }
+    if (
+      fakeDate.getMonth() === 11 ||
+      fakeDate.getMonth() === 0 ||
+      fakeDate.getMonth() === 1
+    ) {
+      return 'winter'
+    }
   }
 }

@@ -13,33 +13,47 @@ import { NotImplementedError } from '../extensions/index.js';
  * transform([1, 2, 3, '--discard-prev', 4, 5]) => [1, 2, 4, 5]
  * 
  */
- export default function transform(arr) {
-  let newArray = arguments[0].map(x=>x);
-  if (!Array.isArray(arr)) {
-    throw new Error ('\'arr\'parameter must be an instance of the Array!')
-  }
-  for (let i = 0; i< newArray.length; i++) {
-    if (newArray[i] === '--discard-next') {
-      newArray.splice(i,2)
-    }
-    if (newArray[i] === '--discard-prev') {
-      if ((i-1)<0){newArray.splice(i,1)}
-      else {newArray.splice(i-1,2)}
-    }
-    if (newArray[i] === '--double-next') {
-      if ((newArray[i+1])===undefined) {newArray.splice(i,1)}
-      else {
-        newArray.splice(i,1)
-        newArray.splice(i, 0, newArray[i]);
+ export default function transform(array) {
+  if (Array.isArray(array)) {
+    
+    let res = []
+    let lb = -1;
+    for (let i in array) {
+      i = +i;
+      if (i === lb)
+        continue;
+      if (array[i] == "--discard-next") {
+        if (array[i + 1] != undefined)
+          lb = i + 1;
+        continue;
       }
-    }
-    if (newArray[i] === '--double-prev') {
-      if ((newArray[i-1])===undefined) {newArray.splice(i,1)}
-      else {
-        newArray.splice(i,1)
-        newArray.splice(i, 0, newArray[i-1]);
+      
+      if (array[i] == "--discard-prev") {
+        if (array[i - 1] != undefined && i-1 != lb)
+          res.pop()
+        continue;
       }
+      
+      if (array[i] == "--double-next"){
+        if (array[i + 1] != undefined)
+          res.push(array[i + 1]);
+        continue;
+      }
+      
+      if (array[i] == "--double-prev") {
+        if (array[i - 1] != undefined && i-1 != lb)
+          res.push(array[i - 1]);
+        continue;
+      }
+
+      if (array[i] == "none"){
+        continue;
+      }
+      res.push(array[i])
+      
     }
+    return res
+  } else {
+    throw new Error("'arr' parameter must be an instance of the Array!");
   }
-  return newArray
 }
