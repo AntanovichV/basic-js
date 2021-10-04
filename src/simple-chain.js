@@ -6,20 +6,22 @@ import { NotImplementedError } from '../extensions/index.js';
  */
 export default {
   getLength() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    return str.length;
   },
-  addLink(/* value */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  addLink(value) {
+    let str = "";
+    if (value == undefined) {
+      return str + `'(  )'`
+    }
+    return str + String(value);
   },
-  removeLink(/* position */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  removeLink(position) {
+    if (Number.isInteger(position)||position<str.length) {
+      throw `Error`}
+    return str.split(str[position]).join('')
   },
   reverseChain() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    return str.split('').reverse().join('')
   },
   finishChain() {
     throw new NotImplementedError('Not implemented');
